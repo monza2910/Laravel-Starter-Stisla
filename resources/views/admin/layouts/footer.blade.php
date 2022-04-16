@@ -90,7 +90,7 @@
   <script src="{{asset('assets/admin/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
   <!-- Page Specific JS File -->
   @include('sweetalert::alert')
-  @livewireScripts
+  {{-- @livewireScripts --}}
 </body>
 </html>
 

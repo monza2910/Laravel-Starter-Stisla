@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="{{asset('assets/admin/css/style.css')}}">
         <link rel="stylesheet" href="{{asset('assets/admin/css/components.css')}}">
         <link href="{{asset('assets/admin/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
-        @livewireStyles
+        {{-- @livewireStyles --}}
       </head>
 <body>
   <div id="app">
