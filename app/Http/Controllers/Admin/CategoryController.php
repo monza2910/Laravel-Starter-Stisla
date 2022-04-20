@@ -5,10 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Repositories\CategoryRepository;
 use Illuminate\Http\Request;
-use App\Models\Category;
 use RealRashid\SweetAlert\Facades\Alert;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
@@ -61,10 +58,8 @@ class CategoryController extends Controller
             'slug'  => 'nullable|unique:categories,slug'
         ]);
 
-        $data = $request->all();
-
         try {
-            $this->categoryRepository->store($data);
+            $this->categoryRepository->store($request->all());
             Alert::success('Success','Data category successfully added');
             return redirect()->route('category.index');
         } catch (\Throwable $th) {
@@ -112,9 +107,8 @@ class CategoryController extends Controller
             'name'  => 'required|max:100|min:4|unique:categories,name,'. $id.',id' ,
             'slug'  => 'nullable|min:4|max:100|unique:categories,slug,'. $id.',id'
         ]);
-        $data       = $request->all();
         try {
-            $this->categoryRepository->update($id, $data);
+            $this->categoryRepository->update($id, $request->all());
             Alert::success('Success','Data category successfully updated');
             return redirect()->route('category.index');
         } catch (\Throwable $th) {
