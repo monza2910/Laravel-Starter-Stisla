@@ -5,7 +5,7 @@ use Illuminate\Support\Str;
 
 class BrandRepository
 {
-    public function getOrderBy()
+    public function getBrand()
     {
         $brands   = Brand::orderBy('id','desc')->get();
         return $brands;

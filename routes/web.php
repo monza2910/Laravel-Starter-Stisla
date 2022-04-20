@@ -25,6 +25,10 @@ Route::get('dashboard', [DashboardController::class,'index'])->name('dashboard')
 Route::resource('brand', BrandController::class);
 Route::resource('category', CategoryController::class);
 
+Route::get('product/trash',[ProductController::class,'trash'])->name('product.trash');
+Route::get('product/restore/{id}', [ProductController::class,'restore'])->name('product.restore');
+Route::delete('product/forcedelete/{id}', [ProductController::class,'forceDelete'])->name('product.kill');
+Route::resource('product', ProductController::class);
 
 // Route::get('category', [CategoryController::class,'index'])->name('category.index');
 // Route::get('category/create', [CategoryController::class,'create'])->name('category.create');

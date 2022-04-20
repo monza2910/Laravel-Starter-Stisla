@@ -23,7 +23,7 @@ class BrandController extends Controller
     {
         return view('admin.brands.index',[
             'title'     => $this->title,
-            'brands'    => $this->brandRepository->getOrderBy(),
+            'brands'    => $this->brandRepository->getBrand(),
         ]);
     }
 

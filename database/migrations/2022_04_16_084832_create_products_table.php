@@ -15,19 +15,19 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 100);
-            $table->text('description');
+            $table->string('name');
+            $table->string('slug');
+            $table->string('description', 100);
+            $table->text('content');
             $table->enum('status', ['active', 'draft']);
             $table->bigInteger('price');
             $table->integer('qty');
             $table->bigInteger('view_count')->nullable();
             $table->timestamps();
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('brand_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('category_id')->references('id')->on('categories');
-            $table->foreign('brand_id')->references('id')->on('brands');
+            $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
         });
     }
 

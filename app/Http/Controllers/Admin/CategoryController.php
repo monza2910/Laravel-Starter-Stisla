@@ -25,7 +25,7 @@ class CategoryController extends Controller
         return view('admin.categories.index',
         [
             'title'     => $this->titleCategory,
-            'categories'  => $this->categoryRepository->getOrderBy()
+            'categories'  => $this->categoryRepository->getCategory()
         ]);
     }
 

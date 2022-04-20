@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 class CategoryRepository
 {
 
-    public function getOrderBy()
+    public function getCategory()
     {
         $categories   = Category::orderBy('id','desc')->get();
         return $categories;
