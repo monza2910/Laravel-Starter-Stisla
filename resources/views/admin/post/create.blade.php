@@ -11,21 +11,12 @@
 @section('content')
 <div class="container-fluid">
     <div class="card shadow mb-4">
-        @if ($message = Session::get('success'))
-        <div class="alert alert-success mx-4 my-4">
-            <p>{{ $message }}</p>
-        </div>
-        @elseif($message = session::get('deleted'))
-        <div class="alert alert-danger mx-4 my-4">
-            <p>{{ $message }}</p>
-        </div>
-        @endif
         <div class="card-body">
 
             {{-- <div class="alert alert-info">
               <b>Note!</b> Not all browsers support HTML5 type input.
             </div> --}}
-            <form action="{{route('post.store')}}" method="post" enctype="multipart/form-data">
+            <form action="{{route('category.store')}}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                     <label>Title </label>
@@ -116,7 +107,7 @@
 
                 <div class="form-group text-right">
                     <button class="btn btn-primary mb-2" type="submit">Submit</button>
-                    <a href="{{route('post.index')}}" class="btn btn-info  mb-2"> Back</a>
+                    <a href="{{route('category.index')}}" class="btn btn-info  mb-2"> Back</a>
                 </div>
             </form>
           </div>

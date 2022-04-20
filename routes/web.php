@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\{DashboardController,
+    BrandController, CategoryController, ProductController};
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,4 +21,13 @@ Route::get('/', function () {
 });
 
 Route::get('dashboard', [DashboardController::class,'index'])->name('dashboard');
+// Route::get('brand', [BrandController::class,'index'])->name('brand.index');
+Route::resource('brand', BrandController::class);
 
+
+Route::get('category', [CategoryController::class,'index'])->name('category.index');
+Route::get('category/create', [CategoryController::class,'create'])->name('category.create');
+Route::get('category/{id}', [CategoryController::class,'edit'])->name('category.edit');
+Route::post('category', [CategoryController::class,'store'])->name('category.store');
+Route::delete('category/{id}',[CategoryController::class,'destroy'])->name('category.destroy');
+Route::put('category/{id}', [CategoryController::class,'update'])->name('category.update');
