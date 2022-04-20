@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\CategoryRepository;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Http\Requests\CategoryStoreRequest;
 
 class CategoryController extends Controller
 {
@@ -50,14 +51,8 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryStoreRequest $request)
     {
-
-        $request->validate([
-            'name'  => 'required|max:100|unique:categories,name|min:4',
-            'slug'  => 'nullable|unique:categories,slug'
-        ]);
-
         try {
             $this->categoryRepository->store($request->all());
             Alert::success('Success','Data category successfully added');
