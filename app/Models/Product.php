@@ -6,21 +6,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Product extends Model
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+
+class Product extends Model implements HasMedia
 {
     use HasFactory,SoftDeletes;
+    use InteractsWithMedia;
+
     protected $guarded = [];
 
-    public function user()
+    public function users()
     {
-        return $this->belongsTo(User::class)->withTrashed();
+        return $this->belongsTo(User::class,'user_id');
     }
 
-    /**
-     * The roles that belong to the Post
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
     public function brands()
     {
         return $this->belongsTo(Brand::class,'brand_id');
@@ -29,5 +30,10 @@ class Product extends Model
     public function categories()
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    public function photos()
+    {
+        return $this->morphMany(Media::class, 'model');
     }
 }

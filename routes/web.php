@@ -33,6 +33,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['web','auth']],function 
 
     Route::get('product/trash',[ProductController::class,'trash'])->name('product.trash');
     Route::get('product/restore/{id}', [ProductController::class,'restore'])->name('product.restore');
+    Route::post('product/store/media', [ProductController::class, 'storeMedia'])->name('product.storeMedia');
     Route::delete('product/forcedelete/{id}', [ProductController::class,'forceDelete'])->name('product.kill');
     Route::resource('product', ProductController::class);
 });

@@ -6,13 +6,16 @@ use Illuminate\Support\Str;
 
 class ProductRepository
 {
+    private $mediaCollection = 'photo';
+
     public function getProduct()
     {
-        $products   = Product::with(['categories','brands'])->orderBy('id','desc')->get();
+        $products   = Product::with(['categories','brands','users'])->orderBy('id','desc')->get();
         return $products;
     }
 
     public function storeProduct($data){
+        // dd($data);
         if (!empty($data['slug'])) {
             $slug   = Str::slug($data['slug']);
         } else {
@@ -30,7 +33,12 @@ class ProductRepository
             'brand_id'      => $data['brand']
         ]);
 
+
         $product->categories()->attach($data['category']);
+        foreach ($data['photo'] as $file) {
+            $product->addMedia(storage_path('tmp/uploads/' . $file))->toMediaCollection($this->mediaCollection);
+        }
+
     }
 
     public function getProductById($id)

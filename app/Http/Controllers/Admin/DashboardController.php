@@ -15,7 +15,6 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        Alert::success('Success Title', 'Success Message');
         return view('admin.index');
     }
 

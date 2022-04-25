@@ -8,13 +8,16 @@ use App\Repositories\BrandRepository;
 use App\Repositories\ProductRepository;
 use App\Repositories\CategoryRepository;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
+    private $mediaCollection = 'photo';
     private $productRepository;
     private $categoryRepository;
     private $brandRepository;
     private $title;
+
     public function __construct(ProductRepository $productRepository,CategoryRepository $categoryRepository, BrandRepository $brandRepository)
     {
         $this->productRepository    = $productRepository;
@@ -26,7 +29,8 @@ class ProductController extends Controller
     {
         return view('admin.products.index',[
             'title' => $this->title,
-            'products'  => $this->productRepository->getProduct()
+            'products'  => $this->productRepository->getProduct(),
+            'mediaCollection' => $this->mediaCollection
         ]);
     }
 
@@ -44,12 +48,24 @@ class ProductController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    public function storeMedia(Request $request)
+    {
+        $path = storage_path('tmp/uploads');
+
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+
+        $file = $request->file('file');
+        $name = uniqid() . '_' . trim($file->getClientOriginalName());
+        $file->move($path, $name);
+
+        return response()->json([
+            'name'          => $name,
+            'original_name' => $file->getClientOriginalName(),
+        ]);
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -62,15 +78,23 @@ class ProductController extends Controller
             'qty'   => 'required|integer',
             'brand'   => 'required|integer',
             'category'   => 'required',
+            'photo'     => 'required|max:2048'
         ]);
 
+
         try {
-            $this->productRepository->storeProduct($request->all());
+            DB::beginTransaction();
+            $data = $request->all();
+            $data['photo'] = $request->photo;
+            $this->productRepository->storeProduct($data);
             Alert::success('Success', 'You have successfully created Product.');
             return redirect()->route('product.index');
         } catch (\Throwable $th) {
+            DB::rollBack();
             Alert::error('Error', 'You have unsuccessfully created Product. Because '.$th);
             return redirect()->route('product.create')->withInput($request->all());
+        }finally{
+            DB::commit();
         }
     }
 

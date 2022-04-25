@@ -22,13 +22,15 @@
                     <thead>
                         <tr>
                             <th>No</th>
+                            <th>Image</th>
                             <th>Title</th>
                             <th>Description</th>
                             <th>Category</th>
                             <th>Brand</th>
                             <th>Qty</th>
+                            <th>Views</th>
+                            <th>User</th>
                             <th>Status</th>
-                            <th>Product Views</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -36,6 +38,14 @@
                     @foreach ($products as $index => $product)
                         <tr>
                             <td>{{$index + 1}}</td>
+                            <td>
+                                @if (!empty($product->getMedia($mediaCollection)))
+                                    @foreach ($product->getMedia($mediaCollection) as $media)
+                                    <img src="{{ $media->getFullUrl() }}" style="height: 200px; width: 200px" class="img-thumbnail"
+                                        alt="{{ $media->getFullUrl() }}">
+                                    @endforeach
+                                @endif
+                            </td>
                             <td>{{$product->name}}</td>
                             <td>{{$product->description}}</td>
                             <td>
@@ -43,10 +53,15 @@
                                 <li>{{$category->name}}</li>
                                 @endforeach
                             </td>
-                            <td>{{$product->brands->name}}</td>
+                            <td>@if (!empty($product->brands->name))
+                                {{$product->brands->name}}
+                            @endif</td>
                             <td>{{$product->qty}}</td>
-                            <td>{{$product->status}}</td>
                             <td>{{$product->view_count}}</td>
+                            <td>@if (!empty($product->users->name))
+                                {{$product->users->name}}
+                            @endif</td>
+                            <td>{{$product->status}}</td>
                             <td >
                                 <form action="{{ route('product.destroy',$product->id) }}" method="post">
                                     @csrf
