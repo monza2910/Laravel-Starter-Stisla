@@ -121,7 +121,8 @@ class ProductController extends Controller
             'title'         =>  'Edit ' . $this->title,
             'product'       =>  $this->productRepository->getProductById($id),
             'categories'    =>  $this->categoryRepository->getCategory(),
-            'brands'        =>  $this->brandRepository->getBrand()
+            'brands'        =>  $this->brandRepository->getBrand(),
+            'photos'        =>  $this->productRepository->getProductById($id)->getMedia($this->mediaCollection)
         ]);
     }
 
@@ -144,9 +145,12 @@ class ProductController extends Controller
             'qty'   => 'required|integer',
             'brand'   => 'required|integer',
             'category'   => 'required',
+            'photo'     => 'required|max:2048'
         ]);
         try {
-            $this->productRepository->updateProduct($id,$request->all());
+            $data = $request->all();
+            $data['photo'] = $request->photo;
+            $this->productRepository->updateProduct($id,$data);
             Alert::success('Success', 'You have successfully updated Product.');
             return redirect()->route('product.index');
         } catch (\Throwable $th) {

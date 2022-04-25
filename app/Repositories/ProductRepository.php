@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 use App\Models\Product;
+use App\Models\ProductImage;
 use Illuminate\Support\Str;
 
 class ProductRepository
@@ -10,7 +11,7 @@ class ProductRepository
 
     public function getProduct()
     {
-        $products   = Product::with(['categories','brands','users'])->orderBy('id','desc')->get();
+        $products   = Product::with(['categories','brands','users','media'])->orderBy('id','desc')->get();
         return $products;
     }
 
@@ -38,7 +39,6 @@ class ProductRepository
         foreach ($data['photo'] as $file) {
             $product->addMedia(storage_path('tmp/uploads/' . $file))->toMediaCollection($this->mediaCollection);
         }
-
     }
 
     public function getProductById($id)
@@ -49,6 +49,8 @@ class ProductRepository
 
     public function updateProduct($id,$data)
     {
+
+
         if (!empty($data['slug'])) {
             $slug   = Str::slug($data['slug']);
         } else {
@@ -68,6 +70,22 @@ class ProductRepository
         ]);
 
         $product->categories()->sync($data['category']);
+
+        if (count($product->photos) > 0) {
+            foreach ($product->photos as $media) {
+                if (!in_array($media->file_name, $data['photo'])) {
+                    $media->delete();
+                }
+            }
+        }
+
+        $media = $product->photos->pluck('file_name')->toArray();
+
+        foreach ($data['photo'] as $file) {
+            if (count($media) === 0 || !in_array($file, $media)) {
+                $product->addMedia(storage_path('tmp/uploads/' . $file))->toMediaCollection($this->mediaCollection);
+            }
+        }
     }
 
     public function softDeleteProduct($id)

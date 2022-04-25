@@ -41,7 +41,7 @@
                             <td>
                                 @if (!empty($product->getMedia($mediaCollection)))
                                     @foreach ($product->getMedia($mediaCollection) as $media)
-                                    <img src="{{ $media->getFullUrl() }}" style="height: 200px; width: 200px" class="img-thumbnail"
+                                    <img src="{{$media->getFullUrl()}}" style="height: 200px; width: 200px" class="img-thumbnail"
                                         alt="{{ $media->getFullUrl() }}">
                                     @endforeach
                                 @endif
